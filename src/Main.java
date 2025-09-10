@@ -9,6 +9,7 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 public class Main {
+    private static final String MENSAJES_FILE = "mensajes.txt";
     private static final String USERS_FILE = "users.txt";
     public static void main(String[] args) {
         try {
@@ -20,6 +21,17 @@ public class Main {
             }
         } catch (IOException e) {
             System.out.println("Error al crear el archivo de usuarios.");
+            System.exit(1);
+        }
+        try {
+            File file = new File(MENSAJES_FILE);
+            if (file.createNewFile()) {
+                System.out.println("Archivo 'mensajes.txt' creado.");
+            } else {
+                System.out.println("El archivo 'mensajes.txt' ya existe.");
+            }
+        } catch (IOException e) {
+            System.out.println("Error al crear el archivo de mensajes.");
             System.exit(1);
         }
 
@@ -53,21 +65,21 @@ public class Main {
                 opcion.toLowerCase();;
                 if ("REGISTRO".equalsIgnoreCase(opcion)) {
                     escritor.println("Ingrese un nuevo nombre de usuario:");
-                    String username = lectorSocket.readLine();
+                    String username = lectorSocket.readLine().trim();
                     escritor.println("Ingrese una nueva contraseña:");
-                    String password = lectorSocket.readLine();
+                    String password = lectorSocket.readLine().trim();
 
                     if (usuarioExiste(username)) {
                         escritor.println("ERROR: El nombre de usuario ya existe. Intente de nuevo.");
                     } else {
                         registrarUsuario(username, password);
-                        escritor.println("EXITO: Usuario registrado.");
+                        escritor.print("EXITO: Usuario registrado.");
                     }
                 } else if ("LOGIN".equalsIgnoreCase(opcion)) {
                     escritor.println("Ingrese su nombre de usuario:");
-                    String username = lectorSocket.readLine();
+                    String username = lectorSocket.readLine().trim();
                     escritor.println("Ingrese su contraseña:");
-                    String password = lectorSocket.readLine();
+                    String password = lectorSocket.readLine().trim();
 
                     if (validarCredenciales(username, password)) {
                         escritor.println("EXITO: Login correcto. Bienvenido " + username + "!");
@@ -116,7 +128,7 @@ public class Main {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(":", 2);
-                if (parts.length > 0 && parts[0].equals(username)) {
+                if (parts.length > 0 && parts[0].trim().equals(username)) {
                     return true;
                 }
             }
