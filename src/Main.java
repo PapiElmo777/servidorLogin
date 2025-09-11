@@ -118,15 +118,20 @@ public class Main {
                 break;
 
                 case "ENVIAR_MENSAJE":
-                        if (partesComando.length == 3) {
-                            String destinatario = partesComando[1];
-                            String mensaje = partesComando[2];
+                    if (partesComando.length == 3) {
+                        String destinatario = partesComando[1];
+                        String mensaje = partesComando[2];
+
+                        if (usuarioExiste(destinatario)) {
                             guardarMensaje(usuarioLogueado, destinatario, mensaje);
                             escritor.println("Mensaje enviado correctamente a " + destinatario);
                         } else {
-                            escritor.println("ERROR: Formato de mensaje incorrecto.");
+                            escritor.println("ERROR: El usuario '" + destinatario + "' no existe.");
                         }
-                break;
+                    } else {
+                        escritor.println("ERROR: Formato de mensaje incorrecto.");
+                    }
+                    break;
 
                 case "VER_BUZON":
                         List<String> mensajes = getMensajesParaUsuario(usuarioLogueado);
