@@ -1,0 +1,3 @@
+alfredo:Eide:Hola ¿como estas?
+Eide:alfredo:Hola estoy bien gracias y tu? 
+alfredo:estoy excelente, aqui son las 7:15, que hora tines tu?:1

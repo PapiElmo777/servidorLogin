@@ -114,6 +114,7 @@ public class Main {
                 switch (accion.toUpperCase()){
                     case "LISTA_USUARIOS":
                         String listaUsuarios = getTodosUsuarios();
+                        escritor.println(listaUsuarios);
                 break;
 
                 case "ENVIAR_MENSAJE":
