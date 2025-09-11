@@ -99,7 +99,23 @@ public class Main {
             }
             if (autenticado) {
                 System.out.println("El cliente" + usuarioLogueado + "ha iniciado sesión. Mostrando menu de opciones");
-                BufferedReader teclado = new BufferedReader(new InputStreamReader(System.in));
+                String comandoCliente;
+
+                while ((comandoCliente = lectorSocket.readLine()) != null){
+                    if ("FIN".equalsIgnoreCase(comandoCliente)){
+                        System.out.println("El cliente '" + usuarioLogueado + "' ha terminado la conexión.");
+                        break;
+                    }
+                }
+                String[] partesComando = comandoCliente.split(":", 3);
+                String accion = partesComando[0];
+                System.out.println("Usted a seleccionado " + accion);
+
+                switch (accion.toUpperCase()){
+                    case "LISTA_USUARIOS":
+                        String listaUsuarios = getTodosUsuarios();
+                    break;
+                }
 
             }
 
@@ -148,5 +164,18 @@ public class Main {
             }
         }
         return false;
+    }
+    private static String getTodosUsuarios() throws IOException {
+        List<String> usuarios = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(USERS_FILE))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(":", 2);
+                if (parts.length > 0) {
+                    usuarios.add(parts[0].trim());
+                }
+            }
+        }
+        return String.join(", ", usuarios);
     }
 }
