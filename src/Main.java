@@ -8,6 +8,9 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 public class Main {
     private static final String MENSAJES_FILE = "mensajes.txt";
     private static final String USERS_FILE = "users.txt";
@@ -58,11 +61,13 @@ public class Main {
                 BufferedReader lectorSocket = new BufferedReader(new InputStreamReader(cliente.getInputStream()))
         ) {
             boolean autenticado = false;
-
+            String usuarioLogueado = "";
             while (!autenticado) {
                 escritor.println("BIENVENIDO. Escriba 'REGISTRO' o 'LOGIN'");
                 String opcion = lectorSocket.readLine();
-                opcion.toLowerCase();;
+                opcion.toLowerCase();
+                if (opcion == null) break;
+
                 if ("REGISTRO".equalsIgnoreCase(opcion)) {
                     escritor.println("Ingrese un nuevo nombre de usuario:");
                     String username = lectorSocket.readLine().trim();
@@ -83,6 +88,7 @@ public class Main {
 
                     if (validarCredenciales(username, password)) {
                         escritor.println("EXITO: Login correcto. Bienvenido " + username + "!");
+                        usuarioLogueado = username;
                         autenticado = true;
                     } else {
                         escritor.println("ERROR: Usuario o contraseña incorrectos. Intente de nuevo.");
@@ -92,21 +98,9 @@ public class Main {
                 }
             }
             if (autenticado) {
-                System.out.println("El cliente ha iniciado sesión. Entrando en modo chat.");
+                System.out.println("El cliente" + usuarioLogueado + "ha iniciado sesión. Mostrando menu de opciones");
                 BufferedReader teclado = new BufferedReader(new InputStreamReader(System.in));
-                String entrada;
-                String mensaje;
 
-                while ((entrada = lectorSocket.readLine()) != null) {
-                    if ("FIN".equalsIgnoreCase(entrada)) {
-                        System.out.println("El cliente ha terminado la conexión.");
-                        break;
-                    }
-                    System.out.println("CLIENTE: " + entrada.toUpperCase());
-                    System.out.print("SERVIDOR: ");
-                    mensaje = teclado.readLine();
-                    escritor.println(mensaje);
-                }
             }
 
 
