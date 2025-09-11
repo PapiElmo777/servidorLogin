@@ -221,7 +221,6 @@ public class Main {
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(":", 3);
                 if (parts.length == 3 && parts[1].trim().equalsIgnoreCase(usuarioDestinatario)) {
-                    // Formato: "De: [emisor] - Mensaje: [texto]"
                     mensajesDelUsuario.add("De: " + parts[0].trim() + " - Mensaje: " + parts[2].trim());
                 }
             }
