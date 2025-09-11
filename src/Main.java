@@ -106,7 +106,7 @@ public class Main {
                         System.out.println("El cliente '" + usuarioLogueado + "' ha terminado la conexión.");
                         break;
                     }
-                }
+
                 String[] partesComando = comandoCliente.split(":", 3);
                 String accion = partesComando[0];
                 System.out.println("Usted a seleccionado " + accion);
@@ -126,10 +126,23 @@ public class Main {
                             escritor.println("ERROR: Formato de mensaje incorrecto.");
                         }
                 break;
+
+                case "VER_BUZON":
+                        List<String> mensajes = getMensajesParaUsuario(usuarioLogueado);
+                        escritor.println("TIENES " + mensajes.size() + " MENSAJES SIN LEER:");
+                        for (String msg : mensajes) {
+                            escritor.println(msg);
+                        }
+                        escritor.println("FIN_MENSAJES");
+                break;
+
+                    default:
+                        escritor.println("ERROR: comando desconocido.");
+                        break;
                 }
 
             }
-
+        }
 
         } catch (IOException e) {
             System.out.println("Error de comunicacion con el cliente.");
@@ -195,6 +208,19 @@ public class Main {
             writer.newLine();
         }
     }
-
+    private static List<String> getMensajesParaUsuario(String usuarioDestinatario) throws IOException {
+        List<String> mensajesDelUsuario = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(MENSAJES_FILE))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(":", 3);
+                if (parts.length == 3 && parts[1].trim().equalsIgnoreCase(usuarioDestinatario)) {
+                    // Formato: "De: [emisor] - Mensaje: [texto]"
+                    mensajesDelUsuario.add("De: " + parts[0].trim() + " - Mensaje: " + parts[2].trim());
+                }
+            }
+        }
+        return mensajesDelUsuario;
+    }
 
 }
