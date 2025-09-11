@@ -114,7 +114,18 @@ public class Main {
                 switch (accion.toUpperCase()){
                     case "LISTA_USUARIOS":
                         String listaUsuarios = getTodosUsuarios();
-                    break;
+                break;
+
+                case "ENVIAR_MENSAJE":
+                        if (partesComando.length == 3) {
+                            String destinatario = partesComando[1];
+                            String mensaje = partesComando[2];
+                            guardarMensaje(usuarioLogueado, destinatario, mensaje);
+                            escritor.println("Mensaje enviado correctamente a " + destinatario);
+                        } else {
+                            escritor.println("ERROR: Formato de mensaje incorrecto.");
+                        }
+                break;
                 }
 
             }
@@ -178,4 +189,12 @@ public class Main {
         }
         return String.join(", ", usuarios);
     }
+    private static void guardarMensaje(String emisor, String receptor, String mensaje) throws IOException {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(MENSAJES_FILE, true))) {
+            writer.write(emisor + ":" + receptor + ":" + mensaje);
+            writer.newLine();
+        }
+    }
+
+
 }

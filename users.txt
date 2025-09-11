@@ -1,7 +1,0 @@
-Elmo:Papi
-Eidi:123
-PapiElmo:1234
-Emmi:gordo
-paco:123
-Pepe:Caña
-Ivan:pro
