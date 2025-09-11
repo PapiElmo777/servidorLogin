@@ -122,7 +122,9 @@ public class Main {
                         String destinatario = partesComando[1];
                         String mensaje = partesComando[2];
 
-                        if (usuarioExiste(destinatario)) {
+                        if (destinatario.equalsIgnoreCase(usuarioLogueado)){
+                            escritor.println("No puedes enviarte mensajes a ti mismo, socializa!!!");
+                        } else if (usuarioExiste(destinatario)) {
                             guardarMensaje(usuarioLogueado, destinatario, mensaje);
                             escritor.println("Mensaje enviado correctamente a " + destinatario);
                         } else {
