@@ -8,6 +8,8 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -144,9 +146,23 @@ public class Main {
                         escritor.println("FIN_MENSAJES");
                 break;
 
+                case "ELIMINAR_USUSARIO":
+                        try {
+                            eliminarUsuario(usuarioLogueado);
+                            eliminarMensajesDeUsuario(usuarioLogueado);
+                            escritor.println("EXITO: Tu usuario y mensajes han sido eliminados. Desconectando.");
+                            System.out.println("El usuario '" + usuarioLogueado + "' ha eliminado su cuenta.");
+                            comandoCliente = "FIN";
+                        } catch (IOException e) {
+                            escritor.println("ERROR: No se pudo eliminar el usuario.");
+                            System.err.println("Error al eliminar usuario de " + usuarioLogueado + ": " + e.getMessage());
+                        }
+                break;
                     default:
                         escritor.println("ERROR: comando desconocido.");
                         break;
+
+
                 }
 
             }
@@ -228,6 +244,25 @@ public class Main {
             }
         }
         return mensajesDelUsuario;
+    }
+    private static void eliminarUsuario(String usuarioAEliminar) throws IOException {
+        List<String> lineas = Files.readAllLines(Paths.get(USERS_FILE));
+        List<String> lineasActualizadas = lineas.stream()
+                .filter(linea -> !linea.trim().startsWith(usuarioAEliminar + ":"))
+                .collect(Collectors.toList());
+        Files.write(Paths.get(USERS_FILE), lineasActualizadas);
+    }
+
+    private static void eliminarMensajesDeUsuario(String usuarioAEliminar) throws IOException {
+        List<String> lineas = Files.readAllLines(Paths.get(MENSAJES_FILE));
+        List<String> lineasActualizadas = lineas.stream()
+                .filter(linea -> {
+                    String[] partes = linea.split(":", 3);
+                    return partes.length == 3 && !partes[0].trim().equals(usuarioAEliminar) && !partes[1].trim().equals(usuarioAEliminar);
+                })
+                .collect(Collectors.toList());
+
+        Files.write(Paths.get(MENSAJES_FILE), lineasActualizadas);
     }
 
 }
