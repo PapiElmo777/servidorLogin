@@ -146,7 +146,7 @@ public class Main {
                         escritor.println("FIN_MENSAJES");
                 break;
 
-                case "ELIMINAR_USUSARIO":
+                case "ELIMINAR_CUENTA":
                         try {
                             eliminarUsuario(usuarioLogueado);
                             eliminarMensajesDeUsuario(usuarioLogueado);
