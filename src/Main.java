@@ -135,9 +135,9 @@ public class Main {
                     } else {
                         escritor.println("ERROR: Formato de mensaje incorrecto.");
                     }
-                    break;
+                break;
 
-                    case "MIS_MENSAJES":
+                case "MIS_MENSAJES":
                         List<String> misMensajes = getMensajesEnviadosPorUsuario(usuarioLogueado);
                         int i = 1;
                         for (String msg : misMensajes) {
@@ -145,8 +145,26 @@ public class Main {
                             i++;
                         }
                         escritor.println("FIN_LISTA_MENSAJES");
-                        break;
-
+                break;
+                case "ELIMINAR_MENSAJE":
+                        if (partesComando.length == 2) {
+                            try {
+                                int indice = Integer.parseInt(partesComando[1]);
+                                boolean exito = eliminarMensajeEnviado(usuarioLogueado, indice);
+                                if (exito) {
+                                    escritor.println("EXITO: Mensaje eliminado correctamente.");
+                                } else {
+                                    escritor.println("ERROR: El número de mensaje no es válido.");
+                                }
+                            } catch (NumberFormatException e) {
+                                escritor.println("ERROR: Debes ingresar un número válido.");
+                            } catch (IOException e) {
+                                escritor.println("ERROR: No se pudo eliminar el mensaje del archivo.");
+                            }
+                        } else {
+                            escritor.println("ERROR: Comando de eliminación no válido.");
+                        }
+                break;
                 case "VER_BUZON":
                         List<String> mensajes = getMensajesParaUsuario(usuarioLogueado);
                         escritor.println("TIENES " + mensajes.size() + " MENSAJES SIN LEER:");
