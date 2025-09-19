@@ -137,6 +137,16 @@ public class Main {
                     }
                     break;
 
+                    case "MIS_MENSAJES":
+                        List<String> misMensajes = getMensajesEnviadosPorUsuario(usuarioLogueado);
+                        int i = 1;
+                        for (String msg : misMensajes) {
+                            escritor.println(i + ". " + msg);
+                            i++;
+                        }
+                        escritor.println("FIN_LISTA_MENSAJES");
+                        break;
+
                 case "VER_BUZON":
                         List<String> mensajes = getMensajesParaUsuario(usuarioLogueado);
                         escritor.println("TIENES " + mensajes.size() + " MENSAJES SIN LEER:");
