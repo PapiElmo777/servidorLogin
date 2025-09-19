@@ -289,4 +289,29 @@ public class Main {
         return mensajesEnviados;
     }
 
+    private static boolean eliminarMensajeEnviado(String usuarioEmisor, int indiceAEliminar) throws IOException {
+        List<String> todasLasLineas = Files.readAllLines(Paths.get(MENSAJES_FILE));
+        List<String> lineasActualizadas = new ArrayList<>();
+        int contadorMensajesPropios = 0;
+        boolean eliminado = false;
+
+        for (String linea : todasLasLineas) {
+            String[] partes = linea.split(":", 3);
+            if (partes.length == 3 && partes[0].trim().equalsIgnoreCase(usuarioEmisor)) {
+                contadorMensajesPropios++;
+                if (contadorMensajesPropios == indiceAEliminar) {
+                    eliminado = true;
+                    continue;
+                }
+            }
+            lineasActualizadas.add(linea);
+        }
+
+        if (eliminado) {
+            Files.write(Paths.get(MENSAJES_FILE), lineasActualizadas);
+        }
+
+        return eliminado;
+    }
+
 }
