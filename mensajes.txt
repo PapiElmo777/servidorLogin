@@ -2,3 +2,5 @@ kike:algre:
 mango:kike:que rollo kikin, como estamos
 Eide:mango:que rollo manguito
 Eide:mango:que rollo manguito
+a:Eide:Hola como estas?
+a:mango:pepe pecas, pica papas
