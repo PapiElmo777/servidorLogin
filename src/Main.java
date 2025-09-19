@@ -275,4 +275,18 @@ public class Main {
         Files.write(Paths.get(MENSAJES_FILE), lineasActualizadas);
     }
 
+    private static List<String> getMensajesEnviadosPorUsuario(String usuarioEmisor) throws IOException {
+        List<String> mensajesEnviados = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(MENSAJES_FILE))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(":", 3);
+                if (parts.length == 3 && parts[0].trim().equalsIgnoreCase(usuarioEmisor)) {
+                    mensajesEnviados.add("Para: " + parts[1].trim() + " - Mensaje: " + parts[2].trim());
+                }
+            }
+        }
+        return mensajesEnviados;
+    }
+
 }
