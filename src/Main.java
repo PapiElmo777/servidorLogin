@@ -165,6 +165,8 @@ public class Main {
                             escritor.println("ERROR: Comando de eliminación no válido.");
                         }
                 break;
+                    case "BLOQUEAR":
+                        break;
                 case "VER_BUZON":
                         List<String> mensajes = getMensajesParaUsuario(usuarioLogueado);
                         escritor.println("TIENES " + mensajes.size() + " MENSAJES SIN LEER:");
