@@ -30,25 +30,26 @@ public class Main {
             System.exit(1);
         }
         try {
-            File file = new File(MENSAJES_FILE);
-            if (file.createNewFile()) {
+            File usersFile = new File(USERS_FILE);
+            if (usersFile.createNewFile()) {
+                System.out.println("Archivo 'users.txt' creado.");
+            } else {
+                System.out.println("El archivo 'users.txt' ya existe.");
+            }
+            File mensajesFile = new File(MENSAJES_FILE);
+            if (mensajesFile.createNewFile()) {
                 System.out.println("Archivo 'mensajes.txt' creado.");
             } else {
                 System.out.println("El archivo 'mensajes.txt' ya existe.");
             }
-        } catch (IOException e) {
-            System.out.println("Error al crear el archivo de mensajes.");
-            System.exit(1);
-        }
-        try {
-            File file = new File(BANEADOS_FILE);
-            if (file.createNewFile()) {
+            File baneadosFile = new File(BANEADOS_FILE);
+            if (baneadosFile.createNewFile()) {
                 System.out.println("Archivo 'baneados.txt' creado.");
             } else {
                 System.out.println("El archivo 'baneados.txt' ya existe.");
             }
         } catch (IOException e) {
-            System.out.println("Error al crear el archivo de baneados.");
+            System.out.println("Error al inicializar archivos.");
             System.exit(1);
         }
 
