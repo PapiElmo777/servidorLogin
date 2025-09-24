@@ -357,5 +357,17 @@ public class Main {
         todos.remove(usuarioLogueado);
         return String.join(", ", todos);
     }
-
+    private static List<String> getUsuariosBloqueados(String usuario) throws IOException {
+        List<String> bloqueados = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(BANEADOS_FILE))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(":", 2);
+                if (parts.length == 2 && parts[0].trim().equals(usuario)) {
+                    bloqueados.add(parts[1].trim());
+                }
+            }
+        }
+        return bloqueados;
+    }
 }
