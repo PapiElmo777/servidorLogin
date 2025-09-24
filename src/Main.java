@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 public class Main {
     private static final String MENSAJES_FILE = "mensajes.txt";
     private static final String USERS_FILE = "users.txt";
+    private static final String BANEADOS_FILE = "baneados.txt";
     public static void main(String[] args) {
         try {
             File file = new File(USERS_FILE);
@@ -37,6 +38,17 @@ public class Main {
             }
         } catch (IOException e) {
             System.out.println("Error al crear el archivo de mensajes.");
+            System.exit(1);
+        }
+        try {
+            File file = new File(BANEADOS_FILE);
+            if (file.createNewFile()) {
+                System.out.println("Archivo 'baneados.txt' creado.");
+            } else {
+                System.out.println("El archivo 'baneados.txt' ya existe.");
+            }
+        } catch (IOException e) {
+            System.out.println("Error al crear el archivo de baneados.");
             System.exit(1);
         }
 
