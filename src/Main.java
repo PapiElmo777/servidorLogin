@@ -179,6 +179,19 @@ public class Main {
                         }
                 break;
                     case "BLOQUEAR":
+                        if (partesComando.length == 2) {
+                        String usuarioABloquear = partesComando[1];
+                        if(usuarioABloquear.equalsIgnoreCase(usuarioLogueado)) {
+                            escritor.println("ERROR: No te puedes bloquear a ti mismo.");
+                        } else if (!usuarioExiste(usuarioABloquear)) {
+                            escritor.println("ERROR: El usuario '" + usuarioABloquear + "' no existe.");
+                        } else {
+                            bloquearUsuario(usuarioLogueado, usuarioABloquear);
+                            escritor.println("EXITO: Has bloqueado a " + usuarioABloquear);
+                        }
+                    } else {
+                        escritor.println("ERROR: Comando no válido.");
+                    }
                         break;
                 case "VER_BUZON":
                         List<String> mensajes = getMensajesParaUsuario(usuarioLogueado);
