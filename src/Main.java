@@ -346,5 +346,16 @@ public class Main {
 
         return eliminado;
     }
+    private static String getUsuariosDisponibles(String usuarioLogueado) throws IOException {
+        List<String> todos = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(USERS_FILE))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                todos.add(line.split(":")[0]);
+            }
+        }
+        todos.remove(usuarioLogueado);
+        return String.join(", ", todos);
+    }
 
 }
