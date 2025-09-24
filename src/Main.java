@@ -354,7 +354,9 @@ public class Main {
                 todos.add(line.split(":")[0]);
             }
         }
+        List<String> bloqueados = getUsuariosBloqueados(usuarioLogueado);
         todos.remove(usuarioLogueado);
+        todos.removeAll(bloqueados);
         return String.join(", ", todos);
     }
     private static List<String> getUsuariosBloqueados(String usuario) throws IOException {
