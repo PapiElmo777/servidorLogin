@@ -372,4 +372,12 @@ public class Main {
         }
         return bloqueados;
     }
+    private static void bloquearUsuario(String bloqueador, String bloqueado) throws IOException {
+        if (!getUsuariosBloqueados(bloqueador).contains(bloqueado)) {
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(BANEADOS_FILE, true))) {
+                writer.write(bloqueador + ":" + bloqueado);
+                writer.newLine();
+            }
+        }
+    }
 }
