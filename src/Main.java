@@ -128,7 +128,7 @@ public class Main {
 
                 switch (accion.toUpperCase()){
                     case "LISTA_USUARIOS":
-                        String listaUsuarios = getTodosUsuarios();
+                        String listaUsuarios = getUsuariosDisponibles(usuarioLogueado);
                         escritor.println(listaUsuarios);
                 break;
 
