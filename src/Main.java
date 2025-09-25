@@ -178,7 +178,7 @@ public class Main {
                             escritor.println("ERROR: Comando de eliminación no válido.");
                         }
                 break;
-                    case "BLOQUEAR":
+                case "BLOQUEAR":
                         if (partesComando.length == 2) {
                         String usuarioABloquear = partesComando[1];
                         if(usuarioABloquear.equalsIgnoreCase(usuarioLogueado)) {
@@ -192,7 +192,16 @@ public class Main {
                     } else {
                         escritor.println("ERROR: Comando no válido.");
                     }
-                        break;
+                break;
+                case "LISTA_BLOQUEADOS":
+                    List<String> bloqueados = getUsuariosBloqueados(usuarioLogueado);
+                    if (bloqueados.isEmpty()) {
+                        escritor.println("No tienes a nadie bloqueado.");
+                    } else {
+                        escritor.println(String.join(", ", bloqueados));
+                    }
+                    escritor.println("FIN_LISTA_BLOQUEADOS");
+                break;
                 case "VER_BUZON":
                         List<String> mensajes = getMensajesParaUsuario(usuarioLogueado);
                         escritor.println("TIENES " + mensajes.size() + " MENSAJES SIN LEER:");
