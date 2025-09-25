@@ -278,19 +278,6 @@ public class Main {
         }
         return false;
     }
-    private static String getTodosUsuarios() throws IOException {
-        List<String> usuarios = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader(USERS_FILE))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(":", 2);
-                if (parts.length > 0) {
-                    usuarios.add(parts[0].trim());
-                }
-            }
-        }
-        return String.join(", ", usuarios);
-    }
     private static void guardarMensaje(String emisor, String receptor, String mensaje) throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(MENSAJES_FILE, true))) {
             writer.write(emisor + ":" + receptor + ":" + mensaje);
