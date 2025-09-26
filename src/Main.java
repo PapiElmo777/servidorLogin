@@ -202,6 +202,18 @@ public class Main {
                     }
                     escritor.println("FIN_LISTA_BLOQUEADOS");
                 break;
+                case "DESBLOQUEAR_USUARIO":
+                    if (partesComando.length == 2) {
+                        String usuarioADesbloquear = partesComando[1];
+                        if (desbloquearUsuario(usuarioLogueado, usuarioADesbloquear)) {
+                            escritor.println("EXITO: Has desbloqueado a " + usuarioADesbloquear);
+                        } else {
+                            escritor.println("ERROR: No tenías bloqueado a ese usuario.");
+                        }
+                    } else {
+                        escritor.println("ERROR: Comando no válido.");
+                    }
+                    break;
                 case "VER_BUZON":
                         List<String> mensajes = getMensajesParaUsuario(usuarioLogueado);
                         escritor.println("TIENES " + mensajes.size() + " MENSAJES SIN LEER:");
