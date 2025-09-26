@@ -393,4 +393,17 @@ public class Main {
         List<String> bloqueadosPorDestinatario = getUsuariosBloqueados(destinatario);
         return bloqueadosPorDestinatario.contains(remitente);
     }
+    private static boolean desbloquearUsuario(String desbloqueador, String desbloqueado) throws IOException {
+        List<String> lineas = Files.readAllLines(Paths.get(BANEADOS_FILE));
+        String lineaAEliminar = desbloqueador + ":" + desbloqueado;
+        List<String> lineasActualizadas = lineas.stream()
+                .filter(linea -> !linea.trim().equals(lineaAEliminar))
+                .collect(Collectors.toList());
+
+        if (lineas.size() > lineasActualizadas.size()) {
+            Files.write(Paths.get(BANEADOS_FILE), lineasActualizadas);
+            return true;
+        }
+        return false;
+    }
 }
