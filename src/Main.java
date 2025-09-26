@@ -389,4 +389,8 @@ public class Main {
             }
         }
     }
+    private static boolean estaBloqueado(String remitente, String destinatario) throws IOException {
+        List<String> bloqueadosPorDestinatario = getUsuariosBloqueados(destinatario);
+        return bloqueadosPorDestinatario.contains(remitente);
+    }
 }
