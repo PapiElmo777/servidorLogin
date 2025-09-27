@@ -132,23 +132,25 @@ public class Main {
                         escritor.println(listaUsuarios);
                 break;
 
-                case "ENVIAR_MENSAJE":
-                    if (partesComando.length == 3) {
-                        String destinatario = partesComando[1];
-                        String mensaje = partesComando[2];
-
-                        if (destinatario.equalsIgnoreCase(usuarioLogueado)){
-                            escritor.println("No puedes enviarte mensajes a ti mismo, socializa!!!");
-                        } else if (usuarioExiste(destinatario)) {
-                            guardarMensaje(usuarioLogueado, destinatario, mensaje);
-                            escritor.println("Mensaje enviado correctamente a " + destinatario);
+                    case "ENVIAR_MENSAJE":
+                        if (partesComando.length == 3) {
+                            String destinatario = partesComando[1];
+                            String mensaje = partesComando[2];
+                            List<String> usuariosBloqueados = getUsuariosBloqueados(usuarioLogueado);
+                            if (destinatario.equalsIgnoreCase(usuarioLogueado)){
+                                escritor.println("No puedes enviarte mensajes a ti mismo, socializa!!!");
+                            } else if (usuariosBloqueados.contains(destinatario)) {
+                                escritor.println("ERROR: No puedes enviar mensajes a " + destinatario + " porque estas enojado con el.");
+                            } else if (usuarioExiste(destinatario)) {
+                                guardarMensaje(usuarioLogueado, destinatario, mensaje);
+                                escritor.println("Mensaje enviado correctamente a " + destinatario);
+                            } else {
+                                escritor.println("ERROR: El usuario '" + destinatario + "' no existe.");
+                            }
                         } else {
-                            escritor.println("ERROR: El usuario '" + destinatario + "' no existe.");
+                            escritor.println("ERROR: Formato de mensaje incorrecto.");
                         }
-                    } else {
-                        escritor.println("ERROR: Formato de mensaje incorrecto.");
-                    }
-                break;
+                        break;
 
                 case "MIS_MENSAJES":
                         List<String> misMensajes = getMensajesEnviadosPorUsuario(usuarioLogueado);
@@ -178,7 +180,7 @@ public class Main {
                             escritor.println("ERROR: Comando de eliminación no válido.");
                         }
                 break;
-                case "BLOQUEAR":
+                case "BLOQUEAR_USUARIO":
                         if (partesComando.length == 2) {
                         String usuarioABloquear = partesComando[1];
                         if(usuarioABloquear.equalsIgnoreCase(usuarioLogueado)) {
