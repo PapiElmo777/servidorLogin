@@ -232,8 +232,12 @@ public class Main {
                             String contenido = partesComando[2];
                             crearArchivoUsuario(usuarioLogueado, nombreArchivo, contenido, escritor);
                         }
-                        break;
-                case "ELIMINAR_CUENTA":
+                break;
+                case "MIS_ARCHIVOS":
+                        listarArchivosDeUsuario(usuarioLogueado, escritor);
+                break;
+
+                    case "ELIMINAR_CUENTA":
                         try {
                             eliminarUsuario(usuarioLogueado);
                             eliminarMensajesDeUsuario(usuarioLogueado);
