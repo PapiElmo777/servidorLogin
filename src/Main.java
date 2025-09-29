@@ -468,10 +468,7 @@ public class Main {
         }
         escritor.println("FIN_LISTA_ARCHIVOS");
     }
-    private static boolean estaBloqueado(String remitente, String destinatario) throws IOException {
-        List<String> bloqueadosPorDestinatario = getUsuariosBloqueados(destinatario);
-        return bloqueadosPorDestinatario.contains(remitente);
-    }
+
     private static boolean desbloquearUsuario(String desbloqueador, String desbloqueado) throws IOException {
         List<String> lineas = Files.readAllLines(Paths.get(BANEADOS_FILE));
         String lineaAEliminar = desbloqueador + ":" + desbloqueado;
