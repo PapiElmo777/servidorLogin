@@ -240,14 +240,17 @@ public class Main {
                 case "LISTAR_ARCHIVOS_DE":
                         if (partesComando.length == 2) {
                             String otroUsuario = partesComando[1];
-                            if (usuarioExiste(otroUsuario)) {
-                                listarArchivosDeUsuario(otroUsuario, escritor);
-                            } else {
+                            if (!usuarioExiste(otroUsuario)) {
                                 escritor.println("ERROR: El usuario '" + otroUsuario + "' no existe.");
                                 escritor.println("FIN_LISTA_ARCHIVOS");
+                            } else if (getUsuariosBloqueados(usuarioLogueado).contains(otroUsuario) || getUsuariosBloqueados(otroUsuario).contains(usuarioLogueado)) {
+                                escritor.println("ERROR: No puedes acceder a los archivos de "+otroUsuario+ " porque estas enojado con el.");
+                                escritor.println("FIN_LISTA_ARCHIVOS");
+                            } else {
+                                listarArchivosDeUsuario(otroUsuario, escritor);
                             }
                         }
-                break;
+                    break;
                 case "COMPARTIR_ARCHIVO":
                         if (partesComando.length == 3) {
                             String duenoArchivo = partesComando[1];
