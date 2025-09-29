@@ -226,7 +226,13 @@ public class Main {
                         }
                         escritor.println("FIN_MENSAJES");
                 break;
-
+                case "CREAR_ARCHIVO":
+                        if (partesComando.length == 3) {
+                            String nombreArchivo = partesComando[1];
+                            String contenido = partesComando[2];
+                            crearArchivoUsuario(usuarioLogueado, nombreArchivo, contenido, escritor);
+                        }
+                        break;
                 case "ELIMINAR_CUENTA":
                         try {
                             eliminarUsuario(usuarioLogueado);
