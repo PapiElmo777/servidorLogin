@@ -256,7 +256,7 @@ public class Main {
                             String duenoArchivo = partesComando[1];
                             String nombreArchivo = partesComando[2];
                             if (getUsuariosBloqueados(usuarioLogueado).contains(duenoArchivo) || getUsuariosBloqueados(duenoArchivo).contains(usuarioLogueado)) {
-                                escritor.println("ERROR: No puedes compartir archivos de "+ duenoArchivo+ " un usuario con el que tienes un bloqueo mutuo.");
+                                escritor.println("ERROR: No puedes compartir archivos de "+ duenoArchivo+ " porque estas enojado con el.");
                             } else {
                                 compartirArchivo(usuarioLogueado, duenoArchivo, nombreArchivo, escritor);
                             }
