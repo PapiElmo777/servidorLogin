@@ -13,6 +13,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.nio.file.Path;
 public class Main {
     private static final String MENSAJES_FILE = "mensajes.txt";
     private static final String USERS_FILE = "users.txt";
@@ -468,7 +469,25 @@ public class Main {
         }
         escritor.println("FIN_LISTA_ARCHIVOS");
     }
+    private static void compartirArchivo(String usuarioReceptor, String duenoArchivo, String nombreArchivo, PrintWriter escritor) throws IOException {
+        Path rutaOrigen = Paths.get(FILES_DIRECTORY, nombreArchivo);
 
+        if (!Files.exists(rutaOrigen) || !nombreArchivo.startsWith(duenoArchivo + "_")) {
+            escritor.println("ERROR: El archivo no existe o no pertenece al usuario indicado.");
+            return;
+        }
+
+        String nombreSimple = nombreArchivo.substring(duenoArchivo.length() + 1); // Quita el "usuario_"
+        String nombreArchivoCopia = "copia_de_" + nombreSimple;
+        Path rutaDestino = Paths.get(FILES_DIRECTORY, usuarioReceptor + "_" + nombreArchivoCopia);
+
+        try {
+            Files.copy(rutaOrigen, rutaDestino);
+            escritor.println("EXITO: Archivo copiado a tu directorio como '" + usuarioReceptor + "_" + nombreArchivoCopia + "'");
+        } catch (IOException e) {
+            escritor.println("ERROR: No se pudo copiar el archivo.");
+        }
+    }
     private static boolean desbloquearUsuario(String desbloqueador, String desbloqueado) throws IOException {
         List<String> lineas = Files.readAllLines(Paths.get(BANEADOS_FILE));
         String lineaAEliminar = desbloqueador + ":" + desbloqueado;
