@@ -437,6 +437,19 @@ public class Main {
             escritor.println("ERROR: No se pudo crear el archivo en el servidor.");
         }
     }
+    private static void listarArchivosDeUsuario(String usuario, PrintWriter escritor) {
+        File dir = new File(FILES_DIRECTORY);
+        File[] archivos = dir.listFiles((d, name) -> name.startsWith(usuario + "_") && name.endsWith(".txt"));
+
+        if (archivos == null || archivos.length == 0) {
+            escritor.println("El usuario '" + usuario + "' no tiene archivos.");
+        } else {
+            for (File archivo : archivos) {
+                escritor.println(archivo.getName());
+            }
+        }
+        escritor.println("FIN_LISTA_ARCHIVOS");
+    }
     private static boolean estaBloqueado(String remitente, String destinatario) throws IOException {
         List<String> bloqueadosPorDestinatario = getUsuariosBloqueados(destinatario);
         return bloqueadosPorDestinatario.contains(remitente);
