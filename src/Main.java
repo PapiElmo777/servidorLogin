@@ -251,13 +251,19 @@ public class Main {
                             }
                         }
                     break;
-                case "COMPARTIR_ARCHIVO":
+                    case "COMPARTIR_ARCHIVO":
                         if (partesComando.length == 3) {
                             String duenoArchivo = partesComando[1];
                             String nombreArchivo = partesComando[2];
-                            compartirArchivo(usuarioLogueado, duenoArchivo, nombreArchivo, escritor);
+                            if (getUsuariosBloqueados(usuarioLogueado).contains(duenoArchivo) || getUsuariosBloqueados(duenoArchivo).contains(usuarioLogueado)) {
+                                escritor.println("ERROR: No puedes compartir archivos de "+ duenoArchivo+ " un usuario con el que tienes un bloqueo mutuo.");
+                            } else {
+                                compartirArchivo(usuarioLogueado, duenoArchivo, nombreArchivo, escritor);
+                            }
+                        } else {
+                            escritor.println("ERROR: Formato de comando incorrecto.");
                         }
-                break;
+                        break;
 
                 case "ELIMINAR_CUENTA":
                         try {
