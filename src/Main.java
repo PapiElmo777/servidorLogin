@@ -217,7 +217,7 @@ public class Main {
                     } else {
                         escritor.println("ERROR: Comando no válido.");
                     }
-                    break;
+                break;
                 case "VER_BUZON":
                         List<String> mensajes = getMensajesParaUsuario(usuarioLogueado);
                         escritor.println("TIENES " + mensajes.size() + " MENSAJES SIN LEER:");
@@ -247,8 +247,15 @@ public class Main {
                             }
                         }
                 break;
+                case "COMPARTIR_ARCHIVO":
+                        if (partesComando.length == 3) {
+                            String duenoArchivo = partesComando[1];
+                            String nombreArchivo = partesComando[2];
+                            compartirArchivo(usuarioLogueado, duenoArchivo, nombreArchivo, escritor);
+                        }
+                break;
 
-                    case "ELIMINAR_CUENTA":
+                case "ELIMINAR_CUENTA":
                         try {
                             eliminarUsuario(usuarioLogueado);
                             eliminarMensajesDeUsuario(usuarioLogueado);
