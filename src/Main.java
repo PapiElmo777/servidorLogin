@@ -236,6 +236,17 @@ public class Main {
                 case "MIS_ARCHIVOS":
                         listarArchivosDeUsuario(usuarioLogueado, escritor);
                 break;
+                case "LISTAR_ARCHIVOS_DE":
+                        if (partesComando.length == 2) {
+                            String otroUsuario = partesComando[1];
+                            if (usuarioExiste(otroUsuario)) {
+                                listarArchivosDeUsuario(otroUsuario, escritor);
+                            } else {
+                                escritor.println("ERROR: El usuario '" + otroUsuario + "' no existe.");
+                                escritor.println("FIN_LISTA_ARCHIVOS");
+                            }
+                        }
+                break;
 
                     case "ELIMINAR_CUENTA":
                         try {
