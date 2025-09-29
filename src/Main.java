@@ -411,6 +411,28 @@ public class Main {
             }
         }
     }
+    private static void crearArchivoUsuario(String usuario, String nombreArchivo, String contenido, PrintWriter escritor) {
+        // Esta validación es importante por seguridad
+        if (nombreArchivo == null || !nombreArchivo.matches("[a-zA-Z0-9_\\-]+")) {
+            escritor.println("ERROR: El nombre del archivo contiene caracteres no válidos.");
+            return;
+        }
+
+        String nombreCompleto = usuario + "_" + nombreArchivo + ".txt";
+        File archivo = new File(FILES_DIRECTORY, nombreCompleto);
+
+        if (archivo.exists()) {
+            escritor.println("ERROR: Ya existe un archivo con ese nombre.");
+            return;
+        }
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(archivo))) {
+            writer.write(contenido.replace("\\n", System.lineSeparator()));
+            escritor.println("EXITO: Archivo '" + nombreArchivo + ".txt' creado correctamente.");
+        } catch (IOException e) {
+            escritor.println("ERROR: No se pudo crear el archivo en el servidor.");
+        }
+    }
     private static boolean estaBloqueado(String remitente, String destinatario) throws IOException {
         List<String> bloqueadosPorDestinatario = getUsuariosBloqueados(destinatario);
         return bloqueadosPorDestinatario.contains(remitente);
