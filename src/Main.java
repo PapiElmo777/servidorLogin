@@ -17,7 +17,9 @@ public class Main {
     private static final String MENSAJES_FILE = "mensajes.txt";
     private static final String USERS_FILE = "users.txt";
     private static final String BANEADOS_FILE = "baneados.txt";
+    private static final String FILES_DIRECTORY = "user_files";
     public static void main(String[] args) {
+        new File(FILES_DIRECTORY).mkdir();
         try {
             File file = new File(USERS_FILE);
             if (file.createNewFile()) {
