@@ -45,7 +45,8 @@ public class Main {
 
 
     }
-    private static void crearArchivoSiNoExiste(String nombreArchivo, String tipo) {
+
+    public static void crearArchivoSiNoExiste(String nombreArchivo, String tipo) {
         try {
             File file = new File(nombreArchivo);
             if (file.createNewFile()) {
@@ -59,7 +60,7 @@ public class Main {
         }
     }
 
-    private static boolean usuarioExiste(String username) throws IOException {
+    public static boolean usuarioExiste(String username) throws IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader(USERS_FILE))) {
             String line;
             while ((line = reader.readLine()) != null) {
@@ -72,14 +73,14 @@ public class Main {
         return false;
     }
 
-    private static void registrarUsuario(String username, String password) throws IOException {
+    public static void registrarUsuario(String username, String password) throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(USERS_FILE, true))) {
             writer.write(username + ":" + password);
             writer.newLine();
         }
     }
 
-    private static boolean validarCredenciales(String username, String password) throws IOException {
+    public static boolean validarCredenciales(String username, String password) throws IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader(USERS_FILE))) {
             String line;
             String credentialsToFind = username + ":" + password;
@@ -91,13 +92,13 @@ public class Main {
         }
         return false;
     }
-    private static void guardarMensaje(String emisor, String receptor, String mensaje) throws IOException {
+    public static void guardarMensaje(String emisor, String receptor, String mensaje) throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(MENSAJES_FILE, true))) {
             writer.write(emisor + ":" + receptor + ":" + mensaje);
             writer.newLine();
         }
     }
-    private static List<String> getMensajesParaUsuario(String usuarioDestinatario) throws IOException {
+    public static List<String> getMensajesParaUsuario(String usuarioDestinatario) throws IOException {
         List<String> mensajesDelUsuario = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(MENSAJES_FILE))) {
             String line;
@@ -110,7 +111,7 @@ public class Main {
         }
         return mensajesDelUsuario;
     }
-    private static void eliminarUsuario(String usuarioAEliminar) throws IOException {
+    public static void eliminarUsuario(String usuarioAEliminar) throws IOException {
         List<String> lineas = Files.readAllLines(Paths.get(USERS_FILE));
         List<String> lineasActualizadas = lineas.stream()
                 .filter(linea -> !linea.trim().startsWith(usuarioAEliminar + ":"))
@@ -118,7 +119,7 @@ public class Main {
         Files.write(Paths.get(USERS_FILE), lineasActualizadas);
     }
 
-    private static void eliminarMensajesDeUsuario(String usuarioAEliminar) throws IOException {
+    public static void eliminarMensajesDeUsuario(String usuarioAEliminar) throws IOException {
         List<String> lineas = Files.readAllLines(Paths.get(MENSAJES_FILE));
         List<String> lineasActualizadas = lineas.stream()
                 .filter(linea -> {
@@ -130,7 +131,7 @@ public class Main {
         Files.write(Paths.get(MENSAJES_FILE), lineasActualizadas);
     }
 
-    private static List<String> getMensajesEnviadosPorUsuario(String usuarioEmisor) throws IOException {
+    public static List<String> getMensajesEnviadosPorUsuario(String usuarioEmisor) throws IOException {
         List<String> mensajesEnviados = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(MENSAJES_FILE))) {
             String line;
@@ -144,7 +145,7 @@ public class Main {
         return mensajesEnviados;
     }
 
-    private static boolean eliminarMensajeEnviado(String usuarioEmisor, int indiceAEliminar) throws IOException {
+    public static boolean eliminarMensajeEnviado(String usuarioEmisor, int indiceAEliminar) throws IOException {
         List<String> todasLasLineas = Files.readAllLines(Paths.get(MENSAJES_FILE));
         List<String> lineasActualizadas = new ArrayList<>();
         int contadorMensajesPropios = 0;
@@ -168,7 +169,7 @@ public class Main {
 
         return eliminado;
     }
-    private static String getUsuariosDisponibles(String usuarioLogueado) throws IOException {
+    public static String getUsuariosDisponibles(String usuarioLogueado) throws IOException {
         List<String> todos = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(USERS_FILE))) {
             String line;
@@ -181,7 +182,7 @@ public class Main {
         todos.removeAll(bloqueados);
         return String.join(", ", todos);
     }
-    private static List<String> getUsuariosBloqueados(String usuario) throws IOException {
+    public static List<String> getUsuariosBloqueados(String usuario) throws IOException {
         List<String> bloqueados = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(BANEADOS_FILE))) {
             String line;
@@ -194,7 +195,7 @@ public class Main {
         }
         return bloqueados;
     }
-    private static void bloquearUsuario(String bloqueador, String bloqueado) throws IOException {
+    public static void bloquearUsuario(String bloqueador, String bloqueado) throws IOException {
         if (!getUsuariosBloqueados(bloqueador).contains(bloqueado)) {
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(BANEADOS_FILE, true))) {
                 writer.write(bloqueador + ":" + bloqueado);
@@ -202,7 +203,7 @@ public class Main {
             }
         }
     }
-    private static void crearArchivoUsuario(String usuario, String nombreArchivo, String contenido, PrintWriter escritor) {
+    public static void crearArchivoUsuario(String usuario, String nombreArchivo, String contenido, PrintWriter escritor) {
         if (nombreArchivo == null || !nombreArchivo.matches("[a-zA-Z0-9_\\-]+")) {
             escritor.println("ERROR: El nombre del archivo contiene caracteres no válidos.");
             return;
@@ -223,7 +224,7 @@ public class Main {
             escritor.println("ERROR: No se pudo crear el archivo en el servidor.");
         }
     }
-    private static void listarArchivosDeUsuario(String usuario, PrintWriter escritor) {
+    public static void listarArchivosDeUsuario(String usuario, PrintWriter escritor) {
         File dir = new File(FILES_DIRECTORY);
         File[] archivos = dir.listFiles((d, name) -> name.startsWith(usuario + "_") && name.endsWith(".txt"));
 
@@ -236,7 +237,7 @@ public class Main {
         }
         escritor.println("FIN_LISTA_ARCHIVOS");
     }
-    private static void compartirArchivo(String usuarioReceptor, String duenoArchivo, String nombreArchivo, PrintWriter escritor) throws IOException {
+    public static void compartirArchivo(String usuarioReceptor, String duenoArchivo, String nombreArchivo, PrintWriter escritor) throws IOException {
         Path rutaOrigen = Paths.get(FILES_DIRECTORY, nombreArchivo);
 
         if (!Files.exists(rutaOrigen) || !nombreArchivo.startsWith(duenoArchivo + "_")) {
@@ -255,7 +256,7 @@ public class Main {
             escritor.println("ERROR: No se pudo copiar el archivo.");
         }
     }
-    private static boolean desbloquearUsuario(String desbloqueador, String desbloqueado) throws IOException {
+    public static boolean desbloquearUsuario(String desbloqueador, String desbloqueado) throws IOException {
         List<String> lineas = Files.readAllLines(Paths.get(BANEADOS_FILE));
         String lineaAEliminar = desbloqueador + ":" + desbloqueado;
         List<String> lineasActualizadas = lineas.stream()
@@ -276,6 +277,228 @@ class ClientHandler implements Runnable {
     }
     @Override
     public void run() {
+        try (
+                PrintWriter escritor = new PrintWriter(clienteSocket.getOutputStream(), true);
+                BufferedReader lectorSocket = new BufferedReader(new InputStreamReader(clienteSocket.getInputStream()))
+        ) {
+            boolean autenticado = false;
+            String usuarioLogueado = "";
+            while (!autenticado) {
+                escritor.println("BIENVENIDO. Escriba 'REGISTRO' o 'LOGIN'");
+                String opcion = lectorSocket.readLine();
+                opcion.toLowerCase();
+                if (opcion == null) break;
 
+                if ("REGISTRO".equalsIgnoreCase(opcion)) {
+                    escritor.println("Ingrese un nuevo nombre de usuario:");
+                    String username = lectorSocket.readLine().trim();
+                    escritor.println("Ingrese una nueva contraseña:");
+                    String password = lectorSocket.readLine().trim();
+
+                    if (Main.usuarioExiste(username)) {
+                        escritor.println("ERROR: El nombre de usuario ya existe. Intente de nuevo.");
+                    } else {
+                        Main.registrarUsuario(username, password);
+                        escritor.print("EXITO: Usuario registrado.");
+                    }
+                } else if ("LOGIN".equalsIgnoreCase(opcion)) {
+                    escritor.println("Ingrese su nombre de usuario:");
+                    String username = lectorSocket.readLine().trim();
+                    escritor.println("Ingrese su contraseña:");
+                    String password = lectorSocket.readLine().trim();
+
+                    if (Main.validarCredenciales(username, password)) {
+                        escritor.println("EXITO: Login correcto. Bienvenido " + username + "!");
+                        usuarioLogueado = username;
+                        autenticado = true;
+                    } else {
+                        escritor.println("ERROR: Usuario o contraseña incorrectos. Intente de nuevo.");
+                    }
+                } else {
+                    escritor.println("ERROR: Opcion no valida.");
+                }
+            }
+            if (autenticado) {
+                System.out.println("El cliente" + usuarioLogueado + "ha iniciado sesión. Mostrando menu de opciones");
+                String comandoCliente;
+
+                while ((comandoCliente = lectorSocket.readLine()) != null) {
+                    if ("FIN".equalsIgnoreCase(comandoCliente)) {
+                        System.out.println("El cliente '" + usuarioLogueado + "' ha terminado la conexión.");
+                        break;
+                    }
+
+                    String[] partesComando = comandoCliente.split(":", 3);
+                    String accion = partesComando[0];
+                    System.out.println("Usted a seleccionado " + accion);
+
+                    switch (accion.toUpperCase()) {
+                        case "LISTA_USUARIOS":
+                            String listaUsuarios = Main.getUsuariosDisponibles(usuarioLogueado);
+                            escritor.println(listaUsuarios);
+                            break;
+
+                        case "ENVIAR_MENSAJE":
+                            if (partesComando.length == 3) {
+                                String destinatario = partesComando[1];
+                                String mensaje = partesComando[2];
+                                List<String> usuariosBloqueados = Main.getUsuariosBloqueados(usuarioLogueado);
+                                if (destinatario.equalsIgnoreCase(usuarioLogueado)) {
+                                    escritor.println("No puedes enviarte mensajes a ti mismo, socializa!!!");
+                                } else if (usuariosBloqueados.contains(destinatario)) {
+                                    escritor.println("ERROR: No puedes enviar mensajes a " + destinatario + " porque estas enojado con el.");
+                                } else if (Main.usuarioExiste(destinatario)) {
+                                    Main.guardarMensaje(usuarioLogueado, destinatario, mensaje);
+                                    escritor.println("Mensaje enviado correctamente a " + destinatario);
+                                } else {
+                                    escritor.println("ERROR: El usuario '" + destinatario + "' no existe.");
+                                }
+                            } else {
+                                escritor.println("ERROR: Formato de mensaje incorrecto.");
+                            }
+                            break;
+
+                        case "MIS_MENSAJES":
+                            List<String> misMensajes = Main.getMensajesEnviadosPorUsuario(usuarioLogueado);
+                            int i = 1;
+                            for (String msg : misMensajes) {
+                                escritor.println(i + ". " + msg);
+                                i++;
+                            }
+                            escritor.println("FIN_LISTA_MENSAJES");
+                            break;
+                        case "ELIMINAR_MENSAJE":
+                            if (partesComando.length == 2) {
+                                try {
+                                    int indice = Integer.parseInt(partesComando[1]);
+                                    boolean exito = Main.eliminarMensajeEnviado(usuarioLogueado, indice);
+                                    if (exito) {
+                                        escritor.println("EXITO: Mensaje eliminado correctamente.");
+                                    } else {
+                                        escritor.println("ERROR: El número de mensaje no es válido.");
+                                    }
+                                } catch (NumberFormatException e) {
+                                    escritor.println("ERROR: Debes ingresar un número válido.");
+                                } catch (IOException e) {
+                                    escritor.println("ERROR: No se pudo eliminar el mensaje del archivo.");
+                                }
+                            } else {
+                                escritor.println("ERROR: Comando de eliminación no válido.");
+                            }
+                            break;
+                        case "BLOQUEAR_USUARIO":
+                            if (partesComando.length == 2) {
+                                String usuarioABloquear = partesComando[1];
+                                if (usuarioABloquear.equalsIgnoreCase(usuarioLogueado)) {
+                                    escritor.println("ERROR: No te puedes bloquear a ti mismo.");
+                                } else if (!Main.usuarioExiste(usuarioABloquear)) {
+                                    escritor.println("ERROR: El usuario '" + usuarioABloquear + "' no existe.");
+                                } else {
+                                    Main.bloquearUsuario(usuarioLogueado, usuarioABloquear);
+                                    escritor.println("EXITO: Has bloqueado a " + usuarioABloquear);
+                                }
+                            } else {
+                                escritor.println("ERROR: Comando no válido.");
+                            }
+                            break;
+                        case "LISTA_BLOQUEADOS":
+                            List<String> bloqueados = Main.getUsuariosBloqueados(usuarioLogueado);
+                            if (bloqueados.isEmpty()) {
+                                escritor.println("No tienes a nadie bloqueado.");
+                            } else {
+                                escritor.println(String.join(", ", bloqueados));
+                            }
+                            escritor.println("FIN_LISTA_BLOQUEADOS");
+                            break;
+                        case "DESBLOQUEAR_USUARIO":
+                            if (partesComando.length == 2) {
+                                String usuarioADesbloquear = partesComando[1];
+                                if (Main.desbloquearUsuario(usuarioLogueado, usuarioADesbloquear)) {
+                                    escritor.println("EXITO: Has desbloqueado a " + usuarioADesbloquear);
+                                } else {
+                                    escritor.println("ERROR: No tenías bloqueado a ese usuario.");
+                                }
+                            } else {
+                                escritor.println("ERROR: Comando no válido.");
+                            }
+                            break;
+                        case "VER_BUZON":
+                            List<String> mensajes = Main.getMensajesParaUsuario(usuarioLogueado);
+                            escritor.println("TIENES " + mensajes.size() + " MENSAJES SIN LEER:");
+                            for (String msg : mensajes) {
+                                escritor.println(msg);
+                            }
+                            escritor.println("FIN_MENSAJES");
+                            break;
+                        case "CREAR_ARCHIVO":
+                            if (partesComando.length == 3) {
+                                String nombreArchivo = partesComando[1];
+                                String contenido = partesComando[2];
+                                Main.crearArchivoUsuario(usuarioLogueado, nombreArchivo, contenido, escritor);
+                            }
+                            break;
+                        case "MIS_ARCHIVOS":
+                            Main.listarArchivosDeUsuario(usuarioLogueado, escritor);
+                            break;
+                        case "LISTAR_ARCHIVOS_DE":
+                            if (partesComando.length == 2) {
+                                String otroUsuario = partesComando[1];
+                                if (!Main.usuarioExiste(otroUsuario)) {
+                                    escritor.println("ERROR: El usuario '" + otroUsuario + "' no existe.");
+                                    escritor.println("FIN_LISTA_ARCHIVOS");
+                                } else if (Main.getUsuariosBloqueados(usuarioLogueado).contains(otroUsuario) || Main.getUsuariosBloqueados(otroUsuario).contains(usuarioLogueado)) {
+                                    escritor.println("ERROR: No puedes acceder a los archivos de " + otroUsuario + " porque estas enojado con el.");
+                                    escritor.println("FIN_LISTA_ARCHIVOS");
+                                } else {
+                                    Main.listarArchivosDeUsuario(otroUsuario, escritor);
+                                }
+                            }
+                            break;
+                        case "COMPARTIR_ARCHIVO":
+                            if (partesComando.length == 3) {
+                                String duenoArchivo = partesComando[1];
+                                String nombreArchivo = partesComando[2];
+                                if (Main.getUsuariosBloqueados(usuarioLogueado).contains(duenoArchivo) || Main.getUsuariosBloqueados(duenoArchivo).contains(usuarioLogueado)) {
+                                    escritor.println("ERROR: No puedes compartir archivos de " + duenoArchivo + " porque estas enojado con el.");
+                                } else {
+                                    Main.compartirArchivo(usuarioLogueado, duenoArchivo, nombreArchivo, escritor);
+                                }
+                            } else {
+                                escritor.println("ERROR: Formato de comando incorrecto.");
+                            }
+                            break;
+
+                        case "ELIMINAR_CUENTA":
+                            try {
+                                Main.eliminarUsuario(usuarioLogueado);
+                                Main.eliminarMensajesDeUsuario(usuarioLogueado);
+                                escritor.println("EXITO: Tu usuario y mensajes han sido eliminados. Desconectando.");
+                                System.out.println("El usuario '" + usuarioLogueado + "' ha eliminado su cuenta.");
+                                comandoCliente = "FIN";
+                            } catch (IOException e) {
+                                escritor.println("ERROR: No se pudo eliminar el usuario.");
+                                System.err.println("Error al eliminar usuario de " + usuarioLogueado + ": " + e.getMessage());
+                            }
+                            break;
+                        default:
+                            escritor.println("ERROR: comando desconocido.");
+                            break;
+
+
+                    }
+
+                }
+            }
+
+        } catch (IOException e) {
+            System.out.println("Error de comunicacion con el cliente.");
+        } finally {
+            try {
+                if (clienteSocket != null) clienteSocket.close();
+                System.out.println("Conexiones cerradas.");
+            } catch (IOException e) {
+                System.out.println("Hubo problemas al cerrar las conexiones.");
+            }
+        }
     }
 }
