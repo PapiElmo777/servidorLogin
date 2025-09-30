@@ -24,26 +24,21 @@ public class Main {
         crearArchivoSiNoExiste(USERS_FILE, "usuarios");
         crearArchivoSiNoExiste(MENSAJES_FILE, "mensajes");
         crearArchivoSiNoExiste(BANEADOS_FILE, "baneados");
-
-        ServerSocket socketEspecial = null;
-        try {
-            socketEspecial = new ServerSocket(8080);
-            System.out.println("Servidor iniciado en el puerto 8080, esperando cliente...");
+        try (ServerSocket serverSocket = new ServerSocket(8080)) {
+            System.out.println("Servidor iniciado en el puerto 8080, esperando clientes...");
+            while (true) {
+                try {
+                    Socket clienteSocket = serverSocket.accept();
+                    System.out.println("Cliente conectado: " + clienteSocket.getInetAddress().getHostName());
+                    ClientHandler clientHandler = new ClientHandler(clienteSocket);
+                    new Thread(clientHandler).start();
+                } catch (IOException e) {
+                    System.out.println("No se pudo aceptar la conexión del cliente: " + e.getMessage());
+                }
+            }
         } catch (IOException e) {
-            System.out.println("Hubo problemas en la conexion de red");
-            System.exit(1);
+            System.out.println("Error grave en el servidor: " + e.getMessage());
         }
-
-        Socket cliente = null;
-        try {
-            cliente = socketEspecial.accept();
-            System.out.println("Cliente conectado: " + cliente.getInetAddress().getHostName());
-        } catch (IOException e) {
-            System.out.println("Hubo problemas en la conexion de red");
-            System.exit(1);
-        }
-
-
     }
 
     public static void crearArchivoSiNoExiste(String nombreArchivo, String tipo) {
