@@ -492,3 +492,22 @@ public class Main {
         return false;
     }
 }
+class ClientHandler implements Runnable {
+    private Socket clienteSocket;
+    public ClientHandler(Socket socket) {
+        this.clienteSocket = socket;
+    }
+    @Override
+    public void run() {
+        try (
+                PrintWriter escritor = new PrintWriter(clienteSocket.getOutputStream(), true);
+                BufferedReader lectorSocket = new BufferedReader(new InputStreamReader(clienteSocket.getInputStream()))
+        ) {
+            boolean autenticado = false;
+            String usuarioLogueado = "";
+} catch (IOException e) {
+        System.out.println("No se pudo conectar al servidor o la conexión se perdió.");
+    }
+        System.out.println("Programa cliente termino.");
+}
+}
