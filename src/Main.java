@@ -299,6 +299,19 @@ public class Main {
             }
         }
     }
+    private static void crearArchivoSiNoExiste(String nombreArchivo, String tipo) {
+        try {
+            File file = new File(nombreArchivo);
+            if (file.createNewFile()) {
+                System.out.println("Archivo '" + nombreArchivo + "' creado.");
+            } else {
+                System.out.println("El archivo '" + nombreArchivo + "' ya existe.");
+            }
+        } catch (IOException e) {
+            System.out.println("Error al crear el archivo de " + tipo + ".");
+            System.exit(1);
+        }
+    }
 
     private static boolean usuarioExiste(String username) throws IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader(USERS_FILE))) {
@@ -444,7 +457,6 @@ public class Main {
         }
     }
     private static void crearArchivoUsuario(String usuario, String nombreArchivo, String contenido, PrintWriter escritor) {
-        // Esta validación es importante por seguridad
         if (nombreArchivo == null || !nombreArchivo.matches("[a-zA-Z0-9_\\-]+")) {
             escritor.println("ERROR: El nombre del archivo contiene caracteres no válidos.");
             return;
