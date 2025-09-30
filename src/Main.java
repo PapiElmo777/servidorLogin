@@ -492,3 +492,27 @@ public class Main {
         return false;
     }
 }
+class ClientHandler implements Runnable {
+    private Socket clienteSocket;
+    public ClientHandler(Socket socket) {
+        this.clienteSocket = socket;
+    }
+    @Override
+    public void run() {
+        try (
+                PrintWriter escritor = new PrintWriter(clienteSocket.getOutputStream(), true);
+                BufferedReader lectorSocket = new BufferedReader(new InputStreamReader(clienteSocket.getInputStream()))
+        ) {
+            boolean autenticado = false;
+            String usuarioLogueado = "";
+} catch (IOException e) {
+        System.out.println("Error de comunicación con un cliente: " + e.getMessage());
+    } finally {
+        try {
+            if (clienteSocket != null) clienteSocket.close();
+        } catch (IOException e) {
+            System.out.println("Hubo problemas al cerrar la conexión con un cliente.");
+        }
+    }
+}
+}
