@@ -41,7 +41,7 @@ public class Main {
         }
     }
 
-    public static void crearArchivoSiNoExiste(String nombreArchivo, String tipo) {
+    public static synchronized void crearArchivoSiNoExiste(String nombreArchivo, String tipo) {
         try {
             File file = new File(nombreArchivo);
             if (file.createNewFile()) {
@@ -55,7 +55,7 @@ public class Main {
         }
     }
 
-    public static boolean usuarioExiste(String username) throws IOException {
+    public static synchronized boolean usuarioExiste(String username) throws IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader(USERS_FILE))) {
             String line;
             while ((line = reader.readLine()) != null) {
@@ -68,14 +68,14 @@ public class Main {
         return false;
     }
 
-    public static void registrarUsuario(String username, String password) throws IOException {
+    public static synchronized void registrarUsuario(String username, String password) throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(USERS_FILE, true))) {
             writer.write(username + ":" + password);
             writer.newLine();
         }
     }
 
-    public static boolean validarCredenciales(String username, String password) throws IOException {
+    public static synchronized boolean validarCredenciales(String username, String password) throws IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader(USERS_FILE))) {
             String line;
             String credentialsToFind = username + ":" + password;
@@ -87,13 +87,13 @@ public class Main {
         }
         return false;
     }
-    public static void guardarMensaje(String emisor, String receptor, String mensaje) throws IOException {
+    public static synchronized void guardarMensaje(String emisor, String receptor, String mensaje) throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(MENSAJES_FILE, true))) {
             writer.write(emisor + ":" + receptor + ":" + mensaje);
             writer.newLine();
         }
     }
-    public static List<String> getMensajesParaUsuario(String usuarioDestinatario) throws IOException {
+    public static synchronized List<String> getMensajesParaUsuario(String usuarioDestinatario) throws IOException {
         List<String> mensajesDelUsuario = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(MENSAJES_FILE))) {
             String line;
@@ -106,7 +106,7 @@ public class Main {
         }
         return mensajesDelUsuario;
     }
-    public static void eliminarUsuario(String usuarioAEliminar) throws IOException {
+    public static synchronized void eliminarUsuario(String usuarioAEliminar) throws IOException {
         List<String> lineas = Files.readAllLines(Paths.get(USERS_FILE));
         List<String> lineasActualizadas = lineas.stream()
                 .filter(linea -> !linea.trim().startsWith(usuarioAEliminar + ":"))
@@ -114,7 +114,7 @@ public class Main {
         Files.write(Paths.get(USERS_FILE), lineasActualizadas);
     }
 
-    public static void eliminarMensajesDeUsuario(String usuarioAEliminar) throws IOException {
+    public static synchronized void eliminarMensajesDeUsuario(String usuarioAEliminar) throws IOException {
         List<String> lineas = Files.readAllLines(Paths.get(MENSAJES_FILE));
         List<String> lineasActualizadas = lineas.stream()
                 .filter(linea -> {
@@ -126,7 +126,7 @@ public class Main {
         Files.write(Paths.get(MENSAJES_FILE), lineasActualizadas);
     }
 
-    public static List<String> getMensajesEnviadosPorUsuario(String usuarioEmisor) throws IOException {
+    public static synchronized List<String> getMensajesEnviadosPorUsuario(String usuarioEmisor) throws IOException {
         List<String> mensajesEnviados = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(MENSAJES_FILE))) {
             String line;
@@ -140,7 +140,7 @@ public class Main {
         return mensajesEnviados;
     }
 
-    public static boolean eliminarMensajeEnviado(String usuarioEmisor, int indiceAEliminar) throws IOException {
+    public static synchronized boolean eliminarMensajeEnviado(String usuarioEmisor, int indiceAEliminar) throws IOException {
         List<String> todasLasLineas = Files.readAllLines(Paths.get(MENSAJES_FILE));
         List<String> lineasActualizadas = new ArrayList<>();
         int contadorMensajesPropios = 0;
@@ -164,7 +164,7 @@ public class Main {
 
         return eliminado;
     }
-    public static String getUsuariosDisponibles(String usuarioLogueado) throws IOException {
+    public static synchronized String getUsuariosDisponibles(String usuarioLogueado) throws IOException {
         List<String> todos = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(USERS_FILE))) {
             String line;
@@ -177,7 +177,7 @@ public class Main {
         todos.removeAll(bloqueados);
         return String.join(", ", todos);
     }
-    public static List<String> getUsuariosBloqueados(String usuario) throws IOException {
+    public static synchronized List<String> getUsuariosBloqueados(String usuario) throws IOException {
         List<String> bloqueados = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(BANEADOS_FILE))) {
             String line;
@@ -190,7 +190,7 @@ public class Main {
         }
         return bloqueados;
     }
-    public static void bloquearUsuario(String bloqueador, String bloqueado) throws IOException {
+    public static synchronized void bloquearUsuario(String bloqueador, String bloqueado) throws IOException {
         if (!getUsuariosBloqueados(bloqueador).contains(bloqueado)) {
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(BANEADOS_FILE, true))) {
                 writer.write(bloqueador + ":" + bloqueado);
@@ -198,7 +198,7 @@ public class Main {
             }
         }
     }
-    public static void crearArchivoUsuario(String usuario, String nombreArchivo, String contenido, PrintWriter escritor) {
+    public static synchronized void crearArchivoUsuario(String usuario, String nombreArchivo, String contenido, PrintWriter escritor) {
         if (nombreArchivo == null || !nombreArchivo.matches("[a-zA-Z0-9_\\-]+")) {
             escritor.println("ERROR: El nombre del archivo contiene caracteres no válidos.");
             return;
@@ -219,7 +219,7 @@ public class Main {
             escritor.println("ERROR: No se pudo crear el archivo en el servidor.");
         }
     }
-    public static void listarArchivosDeUsuario(String usuario, PrintWriter escritor) {
+    public static synchronized void listarArchivosDeUsuario(String usuario, PrintWriter escritor) {
         File dir = new File(FILES_DIRECTORY);
         File[] archivos = dir.listFiles((d, name) -> name.startsWith(usuario + "_") && name.endsWith(".txt"));
 
@@ -232,7 +232,7 @@ public class Main {
         }
         escritor.println("FIN_LISTA_ARCHIVOS");
     }
-    public static void compartirArchivo(String usuarioReceptor, String duenoArchivo, String nombreArchivo, PrintWriter escritor) throws IOException {
+    public static synchronized void compartirArchivo(String usuarioReceptor, String duenoArchivo, String nombreArchivo, PrintWriter escritor) throws IOException {
         Path rutaOrigen = Paths.get(FILES_DIRECTORY, nombreArchivo);
 
         if (!Files.exists(rutaOrigen) || !nombreArchivo.startsWith(duenoArchivo + "_")) {
@@ -251,7 +251,7 @@ public class Main {
             escritor.println("ERROR: No se pudo copiar el archivo.");
         }
     }
-    public static boolean desbloquearUsuario(String desbloqueador, String desbloqueado) throws IOException {
+    public static synchronized boolean desbloquearUsuario(String desbloqueador, String desbloqueado) throws IOException {
         List<String> lineas = Files.readAllLines(Paths.get(BANEADOS_FILE));
         String lineaAEliminar = desbloqueador + ":" + desbloqueado;
         List<String> lineasActualizadas = lineas.stream()
