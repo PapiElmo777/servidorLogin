@@ -294,7 +294,7 @@ class ClientHandler implements Runnable {
                         escritor.println("ERROR: El nombre de usuario ya existe. Intente de nuevo.");
                     } else {
                         Main.registrarUsuario(username, password);
-                        escritor.print("EXITO: Usuario registrado.");
+                        escritor.println("EXITO: Usuario registrado.");
                     }
                 } else if ("LOGIN".equalsIgnoreCase(opcion)) {
                     escritor.println("Ingrese su nombre de usuario:");
