@@ -269,3 +269,13 @@ public class Main {
         return false;
     }
 }
+class ClientHandler implements Runnable {
+    private Socket clienteSocket;
+    public ClientHandler(Socket socket) {
+        this.clienteSocket = socket;
+    }
+    @Override
+    public void run() {
+
+    }
+}
